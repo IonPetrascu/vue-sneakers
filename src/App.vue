@@ -9,6 +9,8 @@ import Drawer from './components/Drawer.vue'
     <Header />
     <div className="p-10">
       <h2 className="text-3xl font-bold mb-5">Все кроссовоки</h2>
+      <CardList/>
+    </div>
   </div>
   <Drawer/>
 </template>
