@@ -1,5 +1,5 @@
 <script setup>
-import Cart from './Cart.vue';
+import Card from './Card.vue';
 
   defineProps({
   items:Array
@@ -16,6 +16,6 @@ const onClickFavorite = () =>{
 
 <template>
 <div className="grid grid-cols-4 gap-5">
-      <Cart v-for="item in items" :key="item.id" :onClickAdd="onClickAdd" :onClickFavorite="onClickFavorite" :id="item.id" :isFavorite="true" :isAdded="true" :price="item.price" :title="item.title" :imageUrl="item.imageUrl"/>
+      <Card v-for="item in items" :key="item.id" :onClickAdd="onClickAdd" :onClickFavorite="onClickFavorite" :id="item.id" :isFavorite="true" :isAdded="true" :price="item.price" :title="item.title" :imageUrl="item.imageUrl"/>
     </div>
 </template>
