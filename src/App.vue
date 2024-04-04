@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted,ref, watch,reactive,provide } from 'vue';
+import { onMounted,ref, watch,reactive,provide, computed } from 'vue';
 import axios from 'axios'
 
 import HeaderSection from './components/HeaderSection.vue'
@@ -10,6 +10,11 @@ const items = ref([])
 const cart = ref([])
 
 const drawerOpen = ref(false)
+
+const totalPrice = computed(
+  ()=> cart.value?.reduce((acc,el)=> acc + el.price,0)
+)
+
 
 const closeDrawer = ()=>{
   drawerOpen.value = false
@@ -27,7 +32,6 @@ const removeFromCart = (item)=>{
     item.isAdded = false
 }
 const onClickAddPlus = (item)=>{
-  console.log('add');
   if(!item.isAdded ){
     addToCart(item)
   }else{
@@ -124,7 +128,7 @@ provide('cart',{closeDrawer,openDrawer,cart,addToCart,removeFromCart})
 
 <template>
   <div className="mt-14 w-4/5 max-w-7xl m-auto rounded-3xl shadow-xl bg-white">
-    <HeaderSection @open-drawer="openDrawer"/>
+    <HeaderSection :total-price="totalPrice" @open-drawer="openDrawer"/>
     <div className="p-10">
       <div class="flex justify-between items-center">
         <h2 className="text-3xl font-bold mb-5">Все кроссовоки</h2>

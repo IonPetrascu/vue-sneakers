@@ -14,7 +14,7 @@
         className="text-[#5c5c5c] text-base font-normal gap-2 flex items-center cursor-pointer hover:text-black"
       >
         <img src="/cart.svg" alt="Cart" />
-        <span>1205 руб.</span>
+        <span>{{ totalPrice }} руб.</span>
       </li>
       <li
         className=" text-[#5c5c5c] text-base font-normal gap-2 flex items-center cursor-pointer hover:text-black"
@@ -35,4 +35,7 @@
 <script setup>
   const emit = defineEmits(['openDrawer'])
 
+defineProps({
+  totalPrice:Number
+})
 </script>
