@@ -118,7 +118,7 @@ onMounted(async()=>{
 watch(filters,fecthItems)
 
 
-provide('cart',{closeDrawer,openDrawer,cart,onClickAddPlus})
+provide('cart',{closeDrawer,openDrawer,cart,addToCart,removeFromCart})
 
  </script>
 

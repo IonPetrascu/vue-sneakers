@@ -9,7 +9,7 @@ defineProps({
 
 })
 
-const emit = defineEmits(['addToCart'])
+const emit = defineEmits(['removeFromCart'])
 </script>
 
 <template>
@@ -19,6 +19,6 @@ const emit = defineEmits(['addToCart'])
         <h3 class="font-normal text-base mb-2">{{ title }}</h3>
         <span class="font-bold text-base">{{ price }} руб.</span>
     </div>
-        <img @click="()=> emit('addToCart')" class="w-8 h-8 cursor-pointer self-end" src="/close.svg" alt="sneaker">
+        <img @click="()=> emit('removeFromCart')" class="w-8 h-8 cursor-pointer self-end" src="/close.svg" alt="sneaker">
   </div>
 </template>
