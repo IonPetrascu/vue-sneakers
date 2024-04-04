@@ -10,6 +10,12 @@ const items = ref([])
 const cart = ref([])
 
 const drawerOpen = ref(false)
+const isCreatingOrder = ref(false)
+
+const cartIsEmpty = computed(()=> cart.value.length === 0)
+const cartButtonDisabled = computed(()=> isCreatingOrder.value || cartIsEmpty.value)
+
+
 
 const totalPrice = computed(
   ()=> cart.value?.reduce((acc,el)=> acc + el.price,0)
@@ -17,7 +23,6 @@ const totalPrice = computed(
 const vatPrice= computed(
   ()=> Math.round(totalPrice.value / 100 * 5)
 )
-
 const closeDrawer = ()=>{
   drawerOpen.value = false
 }
@@ -40,6 +45,23 @@ const onClickAddPlus = (item)=>{
     removeFromCart(item)
   }
 }
+const createOrder = async ()=>{
+  try {
+    isCreatingOrder.value = true
+    const {data} = await axios.post('https://b71d9efcf989be11.mokky.dev/orders',{
+      items:cart.value,
+      totalPrice:totalPrice.value,
+    })
+    cart.value = []
+
+    return data;
+
+  } catch (error) {
+    console.log(error);
+  }finally{
+    isCreatingOrder.value = false
+  }
+}
 const filters = reactive({
   sortBy:'title',
   searchQuery:''
@@ -52,6 +74,7 @@ const onChangeSearchInput = (e)=>{
 }
 const fetchFavorites = async ()=>{
 try {
+
     const {data:favorites} = await axios.get('https://b71d9efcf989be11.mokky.dev/favorites')
 
     items.value = items.value.map((el)=>{
@@ -123,6 +146,11 @@ onMounted(async()=>{
 })
 watch(filters,fecthItems)
 
+watch(cart,()=>{
+  items.value.forEach(item => {
+      item.isAdded = false
+    });
+})
 
 provide('cart',{closeDrawer,openDrawer,cart,addToCart,removeFromCart})
 
@@ -152,5 +180,5 @@ provide('cart',{closeDrawer,openDrawer,cart,addToCart,removeFromCart})
       </div>
     </div>
   </div>
- <Drawer :vatPrice="vatPrice" :total-price="totalPrice" v-if="drawerOpen"/>
+ <Drawer :buttonDisabled="cartButtonDisabled" @create-order="createOrder" :vatPrice="vatPrice" :total-price="totalPrice" v-if="drawerOpen"/>
 </template>

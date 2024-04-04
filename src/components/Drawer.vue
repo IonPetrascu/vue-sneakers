@@ -1,10 +1,16 @@
 <script setup>
 import DrawerHead from './DrawerHead.vue'
 import CartItemList from './CartItemList.vue'
+
 defineProps({
   vatPrice:Number,
-  totalPrice:Number
+  totalPrice:Number,
+  isCreatingOrder:Boolean,
+  buttonDisabled:Boolean
 })
+
+const emit = defineEmits(['createOrder'])
+
 </script>
 
 
@@ -27,7 +33,7 @@ defineProps({
           <b >{{ vatPrice }} руб. </b>
         </div>
         </div>
-       <button :disabled="totalPrice ? false : true" @click="()=> emit('createOrder')" class="disabled:bg-gray-300 mt-6 group relative w-full rounded-[18px] text-white py-5 font-semibold text-xl bg-[#9dd458] ">
+       <button :disabled="buttonDisabled" @click="()=> emit('createOrder')" class="disabled:bg-gray-300 mt-6 group relative w-full rounded-[18px] text-white py-5 font-semibold text-xl bg-[#9dd458] ">
         Оформить заказ
         <svg class="group-hover:right-6 transition-all absolute right-8 top-[50%] -translate-y-[50%]" width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M1 7H14.7143" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
