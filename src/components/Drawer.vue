@@ -1,5 +1,5 @@
 <script setup>
-import DriwerHead from './DriwerHead.vue'
+import DrawerHead from './DrawerHead.vue'
 import CartItemList from './CartItemList.vue'
 </script>
 
@@ -7,7 +7,7 @@ import CartItemList from './CartItemList.vue'
 <template>
   <div class="flex z-10 justify-end bg-black bg-opacity-70 fixed top-0 left-0 w-full h-full">
     <div class="bg-white p-8 w-[385px] z-20 flex flex-col over " >
-      <DriwerHead/>
+      <DrawerHead/>
       <CartItemList/>
 
       <div class="mt-auto pt-5">

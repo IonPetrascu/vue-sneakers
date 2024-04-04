@@ -7,6 +7,7 @@
     isFavorite:Boolean,
     isAdded:Boolean,
     onClickFavorite:Function,
+    onClickAdd:Function,
   })
 
 

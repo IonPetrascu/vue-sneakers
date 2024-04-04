@@ -1,15 +1,39 @@
 <script setup>
-import { onMounted,ref, watch,reactive } from 'vue';
+import { onMounted,ref, watch,reactive,provide } from 'vue';
 import axios from 'axios'
 
-import Header from './components/Header.vue'
+import HeaderSection from './components/HeaderSection.vue'
 import CardList from './components/CardList.vue'
 import Drawer from './components/Drawer.vue'
 
 const items = ref([])
+const cart = ref([])
 
+const drawerOpen = ref(false)
 
+const closeDrawer = ()=>{
+  drawerOpen.value = false
+}
+const openDrawer = ()=>{
+  drawerOpen.value = true
+}
+const addToCart = (item)=>{
+    cart.value.push(item)
+    item.isAdded = true
 
+}
+const removeFromCart = (item)=>{
+    cart.value = cart.value.filter((el)=> el.id !== item.id )
+    item.isAdded = false
+}
+const onClickAddPlus = (item)=>{
+  console.log('add');
+  if(!item.isAdded ){
+    addToCart(item)
+  }else{
+    removeFromCart(item)
+  }
+}
 const filters = reactive({
   sortBy:'title',
   searchQuery:''
@@ -20,7 +44,6 @@ const onChangeSelect = (e)=>{
 const onChangeSearchInput = (e)=>{
   filters.searchQuery = e.target.value
 }
-
 const fetchFavorites = async ()=>{
 try {
     const {data:favorites} = await axios.get('https://b71d9efcf989be11.mokky.dev/favorites')
@@ -45,7 +68,6 @@ try {
     console.log(error)
   }
 }
-
 const fecthItems = async()=>{
 try {
   const params = {
@@ -89,7 +111,6 @@ const addToFavorite = async (item)=>{
     console.log(error);
   }
 }
-
 onMounted(async()=>{
   await fecthItems()
   await fetchFavorites()
@@ -97,11 +118,13 @@ onMounted(async()=>{
 watch(filters,fecthItems)
 
 
+provide('cart',{closeDrawer,openDrawer,cart,onClickAddPlus})
+
  </script>
 
 <template>
   <div className="mt-14 w-4/5 max-w-7xl m-auto rounded-3xl shadow-xl bg-white">
-    <Header />
+    <HeaderSection @open-drawer="openDrawer"/>
     <div className="p-10">
       <div class="flex justify-between items-center">
         <h2 className="text-3xl font-bold mb-5">Все кроссовоки</h2>
@@ -119,9 +142,9 @@ watch(filters,fecthItems)
       </div>
       <div class="mt-10">
 
-        <CardList @add-to-favorite="addToFavorite" :items="items"/>
+        <CardList @on-click-add-plus="onClickAddPlus" @add-to-favorite="addToFavorite" :items="items"/>
       </div>
     </div>
   </div>
- <!--  <Drawer/> -->
+ <Drawer v-if="drawerOpen"/>
 </template>
