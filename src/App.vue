@@ -14,7 +14,9 @@ const drawerOpen = ref(false)
 const totalPrice = computed(
   ()=> cart.value?.reduce((acc,el)=> acc + el.price,0)
 )
-
+const vatPrice= computed(
+  ()=> Math.round(totalPrice.value / 100 * 5)
+)
 
 const closeDrawer = ()=>{
   drawerOpen.value = false
@@ -150,5 +152,5 @@ provide('cart',{closeDrawer,openDrawer,cart,addToCart,removeFromCart})
       </div>
     </div>
   </div>
- <Drawer v-if="drawerOpen"/>
+ <Drawer :vatPrice="vatPrice" :total-price="totalPrice" v-if="drawerOpen"/>
 </template>
