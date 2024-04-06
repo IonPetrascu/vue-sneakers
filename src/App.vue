@@ -39,11 +39,12 @@ const removeFromCart = (item)=>{
     item.isAdded = false
 }
 const onClickAddPlus = (item)=>{
-  if(!item.isAdded ){
-    addToCart(item)
-  }else{
+  if(cart.value.some((el)=> el.id === item.id)){
     removeFromCart(item)
+  }else{
+    addToCart(item)
   }
+
 }
 const createOrder = async ()=>{
   try {
@@ -53,7 +54,9 @@ const createOrder = async ()=>{
       totalPrice:totalPrice.value,
     })
     cart.value = []
-
+    items.value.forEach(item => {
+      item.isAdded = false
+    });
     return data;
 
   } catch (error) {
@@ -141,17 +144,27 @@ const addToFavorite = async (item)=>{
   }
 }
 onMounted(async()=>{
+  const localCart = localStorage.getItem('cart')
+  cart.value = localCart ? JSON.parse(localCart) : []
+
   await fecthItems()
   await fetchFavorites()
+
+  items.value = items.value.map((item)=>{
+  return  {...item,
+    isAdded: cart.value.some((cartItem)=> cartItem.id === item.id)
+  }})
 })
 watch(filters,fecthItems)
 
-watch(cart,()=>{
-  items.value.forEach(item => {
-      item.isAdded = false
-    });
-})
 
+watch(
+  cart,
+  () => {
+    localStorage.setItem('cart', JSON.stringify(cart.value))
+  },
+  { deep: true }
+)
 provide('cart',{closeDrawer,openDrawer,cart,addToCart,removeFromCart})
 
  </script>
