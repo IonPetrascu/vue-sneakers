@@ -193,5 +193,5 @@ provide('cart',{closeDrawer,openDrawer,cart,addToCart,removeFromCart})
       </div>
     </div>
   </div>
- <Drawer :buttonDisabled="cartButtonDisabled" @create-order="createOrder" :vatPrice="vatPrice" :total-price="totalPrice" v-if="drawerOpen"/>
+ <Drawer @close-drawer="closeDrawer" :buttonDisabled="cartButtonDisabled" @create-order="createOrder" :vatPrice="vatPrice" :total-price="totalPrice" v-if="drawerOpen"/>
 </template>

@@ -9,14 +9,14 @@ defineProps({
   buttonDisabled:Boolean
 })
 
-const emit = defineEmits(['createOrder'])
+const emit = defineEmits(['createOrder','closeDrawer'])
 
 </script>
 
 
 <template>
-  <div class="flex z-10 justify-end bg-black bg-opacity-70 fixed top-0 left-0 w-full h-full">
-    <div class="bg-white justify-items-start p-8 w-[385px] z-20 flex flex-col  " >
+  <div @click="()=> emit('closeDrawer')" class="flex z-10 cursor-pointer justify-end bg-black bg-opacity-70 fixed top-0 left-0 w-full h-full">
+    <div @click="(e)=> e.stopPropagation()" class="bg-white cursor-default justify-items-start p-8 w-[385px] z-20 flex flex-col  " >
       <DrawerHead/>
         <div v-if="!totalPrice" class="flex h-full items-center">
           <InfoBlock image-url="/package-icon.png" title="Корзина пустая" description="Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."/>
