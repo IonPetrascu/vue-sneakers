@@ -36,7 +36,7 @@ const addToCart = (item)=>{
 }
 const removeFromCart = (item)=>{
     cart.value = cart.value.filter((el)=> el.id !== item.id )
-    item.isAdded = false
+  items.value = items.value.map((el)=>el.id === item.id ? {...el,isAdded:false} : {...el} )
 }
 const onClickAddPlus = (item)=>{
   if(cart.value.some((el)=> el.id === item.id)){
@@ -115,8 +115,8 @@ try {
     })
     items.value = data.map((el)=> ({
       ...el,
-      isfavorite:false,
-      isAdded:false,
+     isfavorite:false,
+    isAdded:cart.value.some((item)=>item.id === el.id ? true:false ),
       favoriteId:null
     }))
   } catch (error) {
